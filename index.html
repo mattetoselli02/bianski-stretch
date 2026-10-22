@@ -1,0 +1,413 @@
+<title>Bianski Stretch</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Stretching quotidiano con manichino 3D, sessioni automatiche e giorni di fila.">
+<meta name="theme-color" content="#FFF3F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1E0D17" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bianski Stretch">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icone/icona-180.png">
+<link rel="icon" type="image/png" href="icone/icona-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500;1,600;1,700&family=Nunito:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: app a schede con barra in basso; il "fiore della settimana" (un petalo per giorno) è l'elemento firma; titoli in corsivo sartoriale, testo arrotondato */
+:root{
+  --bg:#FFF3F7; --surface:#FFFFFF; --surface-2:#FDE5EE; --surface-3:#FBD3E2;
+  --ink:#4B1634; --ink-2:#8C4E6E; --ink-3:#BC8BA4; --line:#F6D1DF;
+  --accent:#E23E7C; --accent-2:#F589AE; --accent-ink:#FFFFFF; --accent-soft:#FFDCE9;
+  --lilla:#A98BE8; --good:#2E9B70; --scrim:rgba(75,22,52,.32);
+  --fig:#EC86AA; --fig-light:#FFFFFF; --fig-dark:#6A1E46; --fig-hair:#8E2F5C;
+  --mat:#F9C6D8; --mat-edge:#EFA8C2; --floor:#FCE9F0; --shadow:#6A1E46; --wall:#F7E4EC; --wood:#D9A98F; --block:#BBA2EE; --strap:#7B4FD0; --roller:#A385E6; --ball:#F06292;
+  --f-display:"Cormorant Garamond", "Iowan Old Style", "Palatino", Georgia, serif;
+  --f-body:"Nunito", ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r:22px; --shadow-card:0 1px 2px rgba(150,40,90,.06), 0 8px 24px rgba(226,62,124,.08);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1E0D17; --surface:#2A1421; --surface-2:#38192B; --surface-3:#4A2038;
+  --ink:#FFE6F0; --ink-2:#EBB0C9; --ink-3:#A9768F; --line:#46213A;
+  --accent:#FF6FA4; --accent-2:#FF9CC0; --accent-ink:#2A0717; --accent-soft:#4D1D35;
+  --lilla:#B9A0F2; --good:#58C99A; --scrim:rgba(0,0,0,.55);
+  --fig:#F598BA; --fig-light:#FFF2F7; --fig-dark:#3A0F27; --fig-hair:#B4467A;
+  --mat:#5A2440; --mat-edge:#76315A; --floor:#2E1424; --shadow:#000000; --wall:#3A1A2D; --wood:#8E6A58; --block:#7E66C2; --strap:#C2A6FF; --roller:#8F74D6; --ball:#FF7AA8;
+  --shadow-card:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1E0D17; --surface:#2A1421; --surface-2:#38192B; --surface-3:#4A2038;
+  --ink:#FFE6F0; --ink-2:#EBB0C9; --ink-3:#A9768F; --line:#46213A;
+  --accent:#FF6FA4; --accent-2:#FF9CC0; --accent-ink:#2A0717; --accent-soft:#4D1D35;
+  --lilla:#B9A0F2; --good:#58C99A; --scrim:rgba(0,0,0,.55);
+  --fig:#F598BA; --fig-light:#FFF2F7; --fig-dark:#3A0F27; --fig-hair:#B4467A;
+  --mat:#5A2440; --mat-edge:#76315A; --floor:#2E1424; --shadow:#000000; --wall:#3A1A2D; --wood:#8E6A58; --block:#7E66C2; --strap:#C2A6FF; --roller:#8F74D6; --ball:#FF7AA8;
+  --shadow-card:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  color-scheme:dark}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:10px}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:600px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Intestazione */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(1.3) blur(14px);-webkit-backdrop-filter:saturate(1.3) blur(14px)}
+.top-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-block:14px 10px}
+.top-row h1{margin:0;font-family:var(--f-display);font-style:italic;font-weight:600;font-size:36px;line-height:1;letter-spacing:-.005em;text-wrap:balance}
+.top-row .sub{font-size:13px;color:var(--ink-2);font-weight:600;white-space:nowrap;padding-bottom:4px}
+
+main{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 104px)}
+.view{display:flex;flex-direction:column;gap:18px;padding-top:4px}
+
+/* Barra delle schede */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:25;padding:8px max(12px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line)}
+.tabs-in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:14px;font-size:11.5px;font-weight:700;color:var(--ink-3)}
+.tab svg{width:24px;height:24px}
+.tab[aria-current="page"]{color:var(--accent)}
+.tab[aria-current="page"] .ic{background:var(--accent-soft)}
+.tab .ic{display:grid;place-items:center;width:52px;height:30px;border-radius:99px;transition:background .2s}
+
+/* Carte e testi */
+.card{background:var(--surface);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow-card)}
+.card-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.card-h h2,.h2{margin:0;font-family:var(--f-display);font-style:italic;font-weight:600;font-size:26px;line-height:1.05;text-wrap:balance}
+.card-h span{font-size:13px;color:var(--ink-3);font-weight:600;white-space:nowrap}
+.eyebrow{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:800}
+.muted{color:var(--ink-2);font-size:14.5px}
+.small{font-size:13px;color:var(--ink-3)}
+.sect{font-family:var(--f-display);font-style:italic;font-weight:600;font-size:22px;margin:6px 2px -6px}
+
+/* Bottoni */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:var(--accent-ink);font-weight:800;border-radius:99px;padding:12px 22px;min-height:48px;letter-spacing:.01em;box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 30%,transparent)}
+.btn.soft{background:var(--accent-soft);color:var(--accent);box-shadow:none}
+.btn.ghost{background:var(--surface-2);color:var(--ink);box-shadow:none}
+.btn.sm{min-height:38px;padding:8px 16px;font-size:14px}
+.btn:disabled{opacity:.45;cursor:default}
+.btn svg{width:18px;height:18px}
+.link{color:var(--accent);font-weight:800;font-size:14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row>.grow{flex:1;min-width:0}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:7px 13px;font-size:13.5px;font-weight:700;background:var(--surface-2);color:var(--ink-2);border:1.5px solid transparent;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.chip.static{padding:4px 10px;font-size:12.5px}
+.chip.tag{background:var(--accent-soft);color:var(--accent);padding:4px 10px;font-size:12.5px}
+
+/* Fiore della settimana */
+.bloom{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.bloom svg{width:132px;height:132px;display:block}
+.bloom .petal{transition:fill .4s}
+.bloom-n{font-family:var(--f-display);font-weight:700;font-style:italic;font-size:44px;fill:var(--ink)}
+.bloom-l{font-size:10px;font-weight:800;letter-spacing:.12em;fill:var(--ink-3);text-transform:uppercase}
+.bloom-txt{display:flex;flex-direction:column;gap:6px;min-width:0}
+.bloom-txt b{font-family:var(--f-display);font-style:italic;font-size:24px;font-weight:600;line-height:1.1}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:4px}
+.days span{font-size:11px;font-weight:800;color:var(--ink-3);text-align:center}
+.days span.on{color:var(--accent)}
+.days span.today{text-decoration:underline;text-underline-offset:3px}
+
+/* Sessioni di oggi */
+.ses{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:var(--r);background:var(--surface);box-shadow:var(--shadow-card);position:relative;overflow:hidden}
+.ses.next{outline:2px solid var(--accent-2)}
+.ses-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.ses-h .t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ses-h .t b{font-family:var(--f-display);font-style:italic;font-weight:600;font-size:25px;line-height:1.05}
+.ses-h .t small{font-size:13px;color:var(--ink-2);font-weight:600}
+.ses-h .time{font-size:13px;font-weight:800;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:99px;white-space:nowrap}
+.ses.done .time{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+.strip::-webkit-scrollbar{display:none}
+.mini{flex:none;width:74px;display:flex;flex-direction:column;gap:3px}
+.mini canvas{width:74px;height:74px;border-radius:16px;background:var(--surface-2);display:block}
+.mini span{font-size:11px;line-height:1.2;color:var(--ink-2);font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ses-f{display:flex;gap:8px;align-items:center}
+.ses-f .btn{flex:1}
+.iconbtn{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--surface-2);color:var(--ink-2);flex:none}
+.iconbtn svg{width:20px;height:20px}
+
+.banner{display:flex;gap:12px;align-items:center;border-radius:var(--r);padding:14px 16px;background:linear-gradient(120deg,var(--accent-soft),color-mix(in srgb,var(--lilla) 22%,var(--surface)));}
+.banner p{margin:0;flex:1;font-size:14.5px;font-weight:600;min-width:0}
+
+/* Durata */
+.dur{display:flex;flex-direction:column;gap:8px}
+.dur-top{display:flex;justify-content:space-between;align-items:baseline}
+.dur-top b{font-family:var(--f-display);font-style:italic;font-weight:700;font-size:34px;line-height:1}
+.dur-top b small{font-family:var(--f-body);font-style:normal;font-size:14px;font-weight:700;color:var(--ink-3);margin-left:3px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:30px;background:transparent}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--accent) var(--p,30%),var(--surface-3) var(--p,30%))}
+input[type=range]::-moz-range-track{height:8px;border-radius:99px;background:var(--surface-3)}
+input[type=range]::-moz-range-progress{height:8px;border-radius:99px;background:var(--accent)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--surface);border:3px solid var(--accent);margin-top:-9px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--surface);border:3px solid var(--accent)}
+.ticks{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-3);font-weight:700}
+
+/* Rubrica */
+.search{display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:99px;padding:0 16px;height:46px;box-shadow:var(--shadow-card)}
+.search input{flex:1;border:0;background:none;outline:none;min-width:0;font-size:16px}
+.search svg{color:var(--ink-3);flex:none}
+.filters{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding:2px 16px}
+.filters::-webkit-scrollbar{display:none}
+select.chip{appearance:none;-webkit-appearance:none;padding-right:28px;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 15px) 52%,calc(100% - 10px) 52%;background-size:5px 5px;background-repeat:no-repeat}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:520px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.excard{display:flex;flex-direction:column;gap:6px;text-align:left;background:var(--surface);border-radius:20px;padding:8px 8px 12px;box-shadow:var(--shadow-card);min-width:0}
+.excard canvas{width:100%;aspect-ratio:1;border-radius:14px;background:var(--surface-2);display:block}
+.excard b{font-size:14.5px;font-weight:800;line-height:1.2;padding-inline:4px}
+.excard small{font-size:12px;color:var(--ink-3);font-weight:600;padding-inline:4px}
+.lv{display:inline-flex;gap:2px;vertical-align:-1px}
+.lv i{width:6px;height:6px;border-radius:50%;background:var(--surface-3)}
+.lv i.on{background:var(--accent)}
+.empty{padding:28px 10px;text-align:center;color:var(--ink-3);font-size:14.5px}
+
+/* Fogli */
+.scrim{position:fixed;inset:0;background:var(--scrim);z-index:40;opacity:0;transition:opacity .25s}
+.scrim.on{opacity:1}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--bg);border-radius:26px 26px 0 0;max-height:calc(100% - env(safe-area-inset-top,0px) - 10px);display:flex;flex-direction:column;transform:translateY(105%);transition:transform .36s cubic-bezier(.2,.9,.25,1);box-shadow:0 -10px 40px rgba(0,0,0,.18)}
+.sheet.on{transform:none}
+.sheet-in{max-width:600px;width:100%;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px;overflow-y:auto;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 28px)}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:9px auto 2px;flex:none}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:2px}
+.sheet-h h2{margin:0;font-family:var(--f-display);font-style:italic;font-weight:600;font-size:28px;line-height:1.05;min-width:0}
+.x{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--surface-2);color:var(--ink-2);flex:none}
+
+/* Visore 3D */
+.stage{position:relative;border-radius:24px;background:radial-gradient(120% 90% at 50% 20%,var(--surface) 0%,var(--surface-2) 100%);overflow:hidden}
+.stage canvas{display:block;width:100%;height:340px;cursor:grab}
+.stage canvas:active{cursor:grabbing}
+.stage .hint{position:absolute;left:12px;bottom:10px;font-size:12px;font-weight:700;color:var(--ink-3);pointer-events:none;display:flex;gap:6px;align-items:center}
+.stage .tools{position:absolute;right:10px;top:10px;display:flex;gap:6px}
+.stage .tools button{background:color-mix(in srgb,var(--surface) 85%,transparent);border-radius:99px;padding:6px 11px;font-size:12.5px;font-weight:800;color:var(--ink-2);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.stage .tools button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fact{background:var(--surface);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.fact span{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.fact b{font-size:14.5px;font-weight:800;line-height:1.2}
+.txt{display:flex;flex-direction:column;gap:6px}
+.txt p{margin:0;font-size:15.5px;max-width:62ch}
+.vars{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.var{background:var(--surface);border-radius:16px;padding:10px 12px;font-size:13.5px;color:var(--ink-2)}
+.var b{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.plan{display:flex;flex-direction:column}
+.plan-r{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line);text-align:left;width:100%}
+.plan-r:first-child{border-top:0}
+.plan-r canvas{width:52px;height:52px;border-radius:12px;background:var(--surface-2)}
+.plan-r b{display:block;font-weight:800;font-size:14.5px;line-height:1.2}
+.plan-r small{font-size:12.5px;color:var(--ink-3);font-weight:600}
+.plan-r .d{font-size:13.5px;font-weight:800;color:var(--ink-2);white-space:nowrap}
+
+/* Player */
+.player{position:fixed;inset:0;z-index:80;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.pl-in{flex:1;min-height:0;max-width:600px;width:100%;margin:0 auto;padding:8px max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 16px) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:10px}
+.pl-top{display:flex;align-items:center;gap:10px}
+.pl-prog{flex:1;display:flex;gap:3px}
+.pl-prog i{flex:1;height:5px;border-radius:3px;background:var(--surface-3)}
+.pl-prog i.done{background:var(--accent)}
+.pl-prog i.cur{background:linear-gradient(90deg,var(--accent) var(--p,0%),var(--surface-3) var(--p,0%))}
+.pl-stage{flex:1;min-height:200px;position:relative;border-radius:26px;background:radial-gradient(120% 90% at 50% 20%,var(--surface) 0%,var(--surface-2) 100%);overflow:hidden}
+.pl-stage canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab}
+.pl-badge{position:absolute;left:12px;top:12px;font-size:12.5px;font-weight:800;padding:6px 11px;border-radius:99px;background:var(--accent);color:var(--accent-ink)}
+.pl-badge.prep{background:var(--lilla);color:#fff}
+.pl-info{display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:center}
+.pl-info h3{margin:0;font-family:var(--f-display);font-style:italic;font-weight:600;font-size:28px;line-height:1.05;min-width:0}
+.pl-info p{margin:0;grid-column:1/-1;font-size:14.5px;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ring{position:relative;width:86px;height:86px;grid-row:1/2;grid-column:2}
+.ring svg{width:86px;height:86px;transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:28px;font-weight:800;font-variant-numeric:tabular-nums}
+.pl-next{font-size:13px;color:var(--ink-3);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-ctrl{display:flex;justify-content:center;align-items:center;gap:22px}
+.pl-ctrl .play{width:68px;height:68px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;box-shadow:0 8px 20px color-mix(in srgb,var(--accent) 35%,transparent)}
+.pl-ctrl .play svg{width:28px;height:28px}
+.end{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+.end h2{margin:0;font-family:var(--f-display);font-style:italic;font-weight:700;font-size:44px;line-height:1}
+.end .stats{display:flex;gap:10px}
+.end .stats div{background:var(--surface);border-radius:18px;padding:12px 16px;min-width:92px}
+.end .stats b{display:block;font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
+.end .stats span{font-size:12px;color:var(--ink-3);font-weight:700}
+
+/* Diario */
+.stats4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{background:var(--surface);border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;box-shadow:var(--shadow-card)}
+.stat span{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.stat b{font-family:var(--f-display);font-style:italic;font-size:36px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.stat em{font-style:normal;font-size:12.5px;color:var(--ink-2);font-weight:600}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal .dn{font-size:11px;font-weight:800;color:var(--ink-3);text-align:center}
+.cal .d{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--ink-3);background:var(--surface-2)}
+.cal .d.l1{background:var(--accent-2);color:#fff}
+.cal .d.l2{background:var(--accent);color:var(--accent-ink)}
+.cal .d.today{box-shadow:0 0 0 2px var(--ink)}
+.cal .d.out{background:none}
+.cal-h{display:flex;justify-content:space-between;align-items:center}
+.cal-h button{width:36px;height:36px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center}
+.hist{display:flex;flex-direction:column}
+.hist-r{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);font-size:14.5px}
+.hist-r:first-child{border-top:0}
+.hist-r .dt{font-size:12.5px;color:var(--ink-3);font-weight:700;min-width:7ch}
+.hist-r b{font-weight:700;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-r .v{font-weight:800;color:var(--accent);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* Profilo */
+.field{display:flex;flex-direction:column;gap:7px}
+.field>label,.field>.lbl{font-size:13px;color:var(--ink-2);font-weight:800}
+.input{background:var(--surface-2);border:1.5px solid transparent;border-radius:14px;padding:11px 13px;font-size:16px;width:100%;outline:none}
+.input:focus{border-color:var(--accent);background:var(--surface)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface-2);border-radius:99px;padding:4px;gap:2px}
+.seg button{padding:9px 6px;border-radius:99px;font-size:14px;font-weight:800;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.slot{border:1.5px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.slot-h{display:flex;gap:8px;align-items:center}
+.slot-h select{flex:1;min-width:0}
+.slot-h input[type=time]{width:112px;flex:none}
+.toggle{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:4px 0;font-size:15px;font-weight:600}
+.sw{position:relative;width:50px;height:30px;flex:none}
+.sw input{opacity:0;position:absolute;inset:0;margin:0;cursor:pointer}
+.sw i{position:absolute;inset:0;border-radius:99px;background:var(--surface-3);transition:background .2s;pointer-events:none}
+.sw i::after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.sw input:checked+i{background:var(--accent)}
+.sw input:checked+i::after{transform:translateX(20px)}
+.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14.5px;color:var(--ink-2)}
+.steps b{color:var(--ink)}
+.copy{display:flex;gap:8px;align-items:center;background:var(--surface-2);border-radius:14px;padding:8px 8px 8px 12px}
+.copy code{flex:1;min-width:0;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;user-select:all}
+.note{font-size:13px;color:var(--ink-3)}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);transform:translateX(-50%) translateY(20px);opacity:0;z-index:90;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-size:14px;font-weight:700;transition:all .25s;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+textarea.input{min-height:110px;font-size:13px;font-family:ui-monospace,Menlo,monospace}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top"><div class="wrap top-row"><h1 id="title">Oggi</h1><span class="sub" id="subtitle"></span></div></header>
+
+<main class="wrap">
+  <!-- OGGI -->
+  <section class="view" id="v-oggi">
+    <div id="setupBanner"></div>
+    <div class="card">
+      <div class="bloom">
+        <svg id="bloom" viewBox="-70 -70 140 140" role="img" aria-label="Giorni di fila"></svg>
+        <div class="bloom-txt">
+          <span class="eyebrow">Questa settimana</span>
+          <b id="bloomMsg"></b>
+          <span class="muted" id="bloomSub"></span>
+          <div class="days" id="bloomDays"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sect">Le sessioni di oggi</div>
+    <div id="todayList" style="display:flex;flex-direction:column;gap:14px"></div>
+    <div class="card">
+      <div class="card-h"><h2>Sessione libera</h2><span>quando vuoi</span></div>
+      <div class="dur">
+        <div class="dur-top"><b><span id="freeVal">12</span><small>min</small></b><span class="small" id="freeInfo"></span></div>
+        <input type="range" id="freeDur" min="7" max="30" step="1" value="12" aria-label="Durata della sessione libera">
+        <div class="ticks"><span>7′</span><span>15′</span><span>22′</span><span>30′</span></div>
+      </div>
+      <div class="chips" id="freeMom"></div>
+      <button class="btn" id="freeGo">Prepara la sessione</button>
+    </div>
+  </section>
+
+  <!-- ESERCIZI -->
+  <section class="view" id="v-esercizi" hidden>
+    <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Cerca un esercizio o una zona" autocomplete="off"></label>
+    <div class="filters">
+      <select class="chip" id="fZona" aria-label="Zona"></select>
+      <select class="chip" id="fLiv" aria-label="Livello"><option value="">Tutti i livelli</option><option value="1">Base</option><option value="2">Intermedio</option><option value="3">Avanzato</option></select>
+      <select class="chip" id="fPos" aria-label="Posizione"></select>
+      <button class="chip" id="fFav" aria-pressed="false">♥ Preferiti</button>
+      <button class="chip" id="fMine" aria-pressed="false">Con i miei attrezzi</button>
+    </div>
+    <div class="small" id="libCount"></div>
+    <div class="grid" id="lib"></div>
+  </section>
+
+  <!-- DIARIO -->
+  <section class="view" id="v-diario" hidden>
+    <div class="stats4" id="stats"></div>
+    <div class="card">
+      <div class="cal-h"><button id="calPrev" aria-label="Mese precedente"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><h2 class="h2" id="calTitle"></h2><button id="calNext" aria-label="Mese successivo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+      <div class="cal" id="cal"></div>
+      <div class="row small"><span class="chips"><span class="chip static" style="background:var(--accent-2);color:#fff">1 sessione</span><span class="chip static" style="background:var(--accent);color:var(--accent-ink)">2 o più</span></span></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Sessioni fatte</h2><span id="histCount"></span></div>
+      <div class="hist" id="hist"></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Backup</h2></div>
+      <p class="muted" style="margin:0">I dati restano solo su questo telefono. Esporta un backup ogni tanto: puoi salvarlo in File o mandartelo, e reimportarlo qui o su un altro telefono.</p>
+      <div class="row"><button class="btn sm" id="exp">Esporta backup</button><button class="btn sm soft" id="imp">Importa backup</button><input type="file" id="impFile" accept="application/json,.json" hidden></div>
+      <details><summary class="small" style="cursor:pointer;font-weight:700">Copia o incolla il backup come testo</summary>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px"><textarea class="input" id="bkText" aria-label="Testo del backup" placeholder="Incolla qui un backup per importarlo"></textarea><div class="row"><button class="btn sm ghost" id="bkCopy">Copia il mio backup</button><button class="btn sm ghost" id="bkPaste">Importa dal testo</button></div></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- PROFILO -->
+  <section class="view" id="v-profilo" hidden>
+    <div class="card">
+      <div class="card-h"><h2>Il tuo livello</h2></div>
+      <div class="seg" id="pLiv"><button data-v="1">Base</button><button data-v="2">Intermedio</button><button data-v="3">Avanzato</button></div>
+      <p class="small" id="pLivTxt" style="margin:0"></p>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Zone su cui concentrarti</h2><span id="pZoneN"></span></div>
+      <div class="chips" id="pZone"></div>
+      <p class="small" style="margin:0">Le sessioni daranno più spazio a queste zone, senza trascurare il resto.</p>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Sessioni al giorno</h2><span id="pSesN"></span></div>
+      <div id="pSes" style="display:flex;flex-direction:column;gap:10px"></div>
+      <button class="btn soft sm" id="pSesAdd">Aggiungi una sessione</button>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Attrezzi che hai</h2></div>
+      <div class="chips" id="pAtt"></div>
+      <p class="small" style="margin:0">Il tappetino si dà per scontato. Gli esercizi che richiedono un attrezzo che non hai restano fuori dalle sessioni.</p>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Durante la sessione</h2></div>
+      <div class="toggle"><span>Voce che guida</span><label class="sw"><input type="checkbox" id="pVoce"><i></i></label></div>
+      <div class="toggle"><span>Suoni ai cambi</span><label class="sw"><input type="checkbox" id="pSuoni"><i></i></label></div>
+      <div class="toggle"><span>Schermo sempre acceso</span><label class="sw"><input type="checkbox" id="pWake"><i></i></label></div>
+    </div>
+    <div class="card" id="remind">
+      <div class="card-h"><h2>Promemoria con Comandi Rapidi</h2></div>
+      <ol class="steps">
+        <li>Apri <b>Comandi Rapidi</b> → scheda <b>Automazione</b> → <b>+</b> → <b>Ora del giorno</b>.</li>
+        <li>Imposta l'orario della sessione, <b>Ogni giorno</b>, e scegli <b>Esegui subito</b>.</li>
+        <li>Aggiungi l'azione <b>Mostra notifica</b> con il testo qui sotto.</li>
+        <li>Se vuoi che parta da sola, aggiungi anche <b>Apri URL</b> con il link della sessione: si apre in Safari, direttamente sulla sessione.</li>
+      </ol>
+      <div id="remList" style="display:flex;flex-direction:column;gap:12px"></div>
+      <p class="note" style="margin:0">In alternativa: <button class="link" id="ics">aggiungi le sessioni al Calendario</button> come eventi giornalieri con avviso.</p>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Installala sulla Home</h2></div>
+      <ol class="steps"><li>Apri l'app in <b>Safari</b>.</li><li>Tocca <b>Condividi</b> → <b>Aggiungi alla schermata Home</b>.</li><li>Da lì si apre a schermo intero e funziona anche senza internet.</li></ol>
+      <p class="note" id="offState" style="margin:0"></p>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs" aria-label="Sezioni"><div class="tabs-in">
+  <button class="tab" data-v="oggi"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5c1.6-3 4.6-3.6 6-2.2 1.4 1.4.8 4.4-2.2 6 3 1.6 3.6 4.6 2.2 6-1.4 1.4-4.4.8-6-2.2-1.6 3-4.6 3.6-6 2.2-1.4-1.4-.8-4.4 2.2-6-3-1.6-3.6-4.6-2.2-6 1.4-1.4 4.4-.8 6 2.2z"/><circle cx="12" cy="11.3" r="2"/></svg></span>Oggi</button>
+  <button class="tab" data-v="esercizi"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4.5" r="2"/><path d="M5 10.5c3-1.6 6-2 9-1l4-3.5M14 9.5l-1.5 6 4 5M12.5 15.5L8 20.5"/></svg></span>Esercizi</button>
+  <button class="tab" data-v="diario"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.4" fill="currentColor"/></svg></span>Diario</button>
+  <button class="tab" data-v="profilo"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></span>Profilo</button>
+</div></nav>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true"><div class="grab"></div><div class="sheet-in" id="sheetIn"></div></div>
+<div class="player" id="player" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="motore.js"></script>
+<script src="esercizi.js"></script>
+<script src="app.js"></script>
